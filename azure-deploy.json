@@ -9,31 +9,22 @@
     "rssFeedsTableStorageConnectionString": {
       "type": "string",
       "minLength": 1
-    },
-    "aiLocation": {
-      "type": "string",
-      "defaultvalue": "eastus"
-    },
-    "gitRepoUrl": {
-      "type": "string",
-      "defaultvalue": "master"
-    },
-    "gitBranch": {
-      "type": "string",
-      "defaultvalue": "https://github.com/mathieu-benoit/MyMonthlyBlogArticle.Functions"
     }
   },
   "variables": {
     "storageName": "[parameters('functionAppName')]",
     "hostingPlanName": "[parameters('functionAppName')]",
-    "appInsightsName": "[parameters('functionAppName')]"
+    "appInsightsName": "[parameters('functionAppName')]",
+    "aiLocation": "eastus",
+    "gitRepoUrl": "https://github.com/mathieu-benoit/MyMonthlyBlogArticle.Functions",
+    "gitBranch": "master"
   },
   "resources": [
     {
       "apiVersion": "2014-08-01",
       "name": "[variables('appInsightsName')]",
       "type": "Microsoft.Insights/components",
-      "location": "[parameters('aiLocation']",
+      "location": "[variables('aiLocation']",
       "properties": {
         "ApplicationId": "[parameters('functionAppName')]",
         "Application_Type": "other"
