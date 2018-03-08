@@ -115,7 +115,7 @@
             "WEBSITE_CONTENTSHARE": "production",
             "AzureWebJobsSecretStorageType": "Blob",
             "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('Microsoft.Insights/Components', variables('appInsightsName'))).InstrumentationKey]",
-            "RssFeedsTableStorageConnectionString": "[parameters('rssFeedsTableStorageConnectionString')"
+            "RssFeedsTableStorageConnectionString": "[parameters('rssFeedsTableStorageConnectionString')]"
           }
         }
       ]
