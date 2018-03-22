@@ -58,7 +58,7 @@ static void GetBlogArticleDate(out string date, TraceWriter log)
     var storageAccount = CloudStorageAccount.Parse(storageAccountConnectionString);
     var tableClient = storageAccount.CreateCloudTableClient();
     var table = tableClient.GetTableReference("RssFeeds");
-    var query = new TableQuery<FeedEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, currentDate.ToString("yyyy-MM")));
+    var query = new TableQuery<FeedEntity>();
     var results = table.ExecuteQuery(query).OrderByDescending(f => f.Date).Take(1);
     date = results[0].Date;
     log.Info($"Number of items while retrieving the current date: {results.Count()}");
