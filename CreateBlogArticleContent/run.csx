@@ -31,7 +31,7 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
 
     if(string.IsNullOrEmpty(date))
     {
-        return req.CreateResponse(HttpStatusCode.BadRequest, "Please provide 'date' parameter.");
+        return req.CreateResponse(HttpStatusCode.BadRequest, "Please provide the 'date' parameter.");
     }
 
     log.Info($"Current date: {date}");
@@ -112,7 +112,7 @@ static void FillBlogArticleBodyContent(StringBuilder builder, DateTime currentDa
             miscStringBuilder.Append($"<br />{feedInHtml}");
         }
 
-        if(feed.Type == "manual")
+        if(feed.Type == FeedEntity.Manual)
         {
             manualEntriesCount++;
         }
