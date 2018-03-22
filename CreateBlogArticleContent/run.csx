@@ -43,19 +43,8 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
 
 static DateTime GetBlogArticleDate(string date)
 {
-    if(!string.IsNullOrEmpty(date))
-    {
-        return DateTime.Parse(date);
-    }
-    var currentDate = DateTime.UtcNow;
-    if(currentDate.Days == 1)
-    {
-        return currentDate.AddMonths(-1);
-    }
-    else
-    {
-        return currentDate;
-    }
+    DateTime currentDate = !string.IsNullOrEmpty(date) ? DateTime.Parse(date) : currentDate = DateTime.UtcNow;
+    return currentDate.Day == 1 ? currentDate.AddMonths(-1) : currentDate;
 }
 
 static string GetBlogArticleUrl(DateTime currentDate)
