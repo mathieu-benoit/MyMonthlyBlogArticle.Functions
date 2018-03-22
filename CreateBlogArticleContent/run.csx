@@ -28,11 +28,8 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
 {
     dynamic requestBody = await req.Content.ReadAsAsync<object>();
     string date = requestBody?.date;
-
-    if(string.IsNullOrEmpty(date))
-    {
-        return req.CreateResponse(HttpStatusCode.BadRequest, "Please provide the 'date' parameter.");
-    }
+    
+    GetBlogArticleDate(out date, log);
 
     log.Info($"Current date: {date}");
 
@@ -47,6 +44,26 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
         title = blogArticleTitle,
         content = blogArticleContent
     });
+}
+
+static void GetBlogArticleDate(out string date, TraceWriter log)
+{
+    if(!string.IsNullOrEmpty(date))
+    {
+        return;
+    }
+    var startTime = DateTime.UtcNow;
+    var timer = System.Diagnostics.Stopwatch.StartNew();
+    var storageAccountConnectionString = Environment.GetEnvironmentVariable("RssFeedsTableStorageConnectionString");
+    var storageAccount = CloudStorageAccount.Parse(storageAccountConnectionString);
+    var tableClient = storageAccount.CreateCloudTableClient();
+    var table = tableClient.GetTableReference("RssFeeds");
+    var query = new TableQuery<FeedEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, currentDate.ToString("yyyy-MM")));
+    var results = table.ExecuteQuery(query).OrderByDescending(f => f.Date).Take(1);
+    date = results[0].Date;
+    log.Info($"Number of items while retrieving the current date: {results.Count()}");
+    telemetry.TrackDependency("TableStorage", "GetBlogArticleDate", startTime, timer.Elapsed, true);
+    
 }
 
 static string GetBlogArticleUrl(DateTime currentDate)
