@@ -22,7 +22,7 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
         return req.CreateResponse(HttpStatusCode.BadRequest, "Please pass parameters in the request body");
     }
 
-    var type = "manual";
+    var type = FeedEntity.Manual;
     var rowKey = link.Substring(link.LastIndexOf('/') + 1);
     var partitionKey = date.Substring(0, date.LastIndexOf('-'));
 

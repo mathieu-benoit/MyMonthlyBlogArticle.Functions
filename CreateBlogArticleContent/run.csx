@@ -28,30 +28,21 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
 {
     dynamic requestBody = await req.Content.ReadAsAsync<object>();
     string date = requestBody?.date;
-
-    if(string.IsNullOrEmpty(date))
-    {
-        return req.CreateResponse(HttpStatusCode.BadRequest, "Please provide 'date' parameter.");
-    }
-
-    log.Info($"Current date: {date}");
-
-    var currentDate = DateTime.Parse(date);
-    var blogArticleUrl = GetBlogArticleUrl(currentDate);
-    var blogArticleTitle = GetBlogArticleTitle(currentDate);
-    var blogArticleContent = GetBlogArticleContent(currentDate);
-
+    var blogArticleDate = GetBlogArticleDate(date);
+    log.Info($"Current date: {blogArticleDate.ToString()}");
+    var blogArticleTitle = GetBlogArticleTitle(blogArticleDate);
+    var blogArticleContent = GetBlogArticleContent(blogArticleDate);
     return req.CreateResponse(HttpStatusCode.OK, new
     {
-        url = blogArticleUrl,
         title = blogArticleTitle,
         content = blogArticleContent
     });
 }
 
-static string GetBlogArticleUrl(DateTime currentDate)
+static DateTime GetBlogArticleDate(string date)
 {
-    return $"https://alwaysupalwayson.blogspot.com/{currentDate.ToString("yyyy")}/{currentDate.ToString("MM")}/microsoft-azure-news-updates-{currentDate.ToString("MMMM-yyyy").ToLower()}.html";
+    DateTime currentDate = !string.IsNullOrEmpty(date) ? DateTime.Parse(date) : currentDate = DateTime.UtcNow;
+    return currentDate.Day == 1 ? currentDate.AddMonths(-1) : currentDate;
 }
 
 static string GetBlogArticleTitle(DateTime currentDate)
@@ -112,7 +103,7 @@ static void FillBlogArticleBodyContent(StringBuilder builder, DateTime currentDa
             miscStringBuilder.Append($"<br />{feedInHtml}");
         }
 
-        if(feed.Type == "manual")
+        if(feed.Type == FeedEntity.Manual)
         {
             manualEntriesCount++;
         }
@@ -131,8 +122,7 @@ static void FillBlogArticleBodyContent(StringBuilder builder, DateTime currentDa
     builder.Append(miscStringBuilder.ToString());
 
     //Footer
-    var monthBefore = currentDate.AddMonths(-1);
-    builder.Append($"<br /><br />Did you miss the one from <a href=\"https://alwaysupalwayson.blogspot.com/{monthBefore.ToString("yyyy")}/{monthBefore.ToString("MM")}/microsoft-azure-news-updates-{monthBefore.ToString("MMMM").ToLower()}.html\">{ monthBefore.ToString("MMMM yyyy")}</a>?");
+    builder.Append($"<br /><br />Did you miss the previous ones? <a href=\"https://alwaysupalwayson.blogspot.ca/search/label/News%20and%20Updates\">Check them out</a>!");
     builder.Append($"<br /><br />Enjoy!");
     builder.Append($"<br /><br /><i>This blog article has been powered by Azure Logic Apps, Azure Functions and Azure Table Storage, <a href=\"https://alwaysupalwayson.blogspot.com/2017/08/my-monthly-azure-news-updates-powered.html\">check out the story</a></i>!");
     builder.Append($"<br /><br /><i>Some stats for the record for this month: {resultsCount} entries ({manualEntriesCount * 100 / resultsCount}% manual) - XX Logic App Runs (XX% failed) - XX Logic App Skipped Runs/Triggers - XX Logic App Billable actions - 1 Azure Functions execution (duration: XXms). The total Azure consumption cost for this month is: XX$CAD.</i>!");
