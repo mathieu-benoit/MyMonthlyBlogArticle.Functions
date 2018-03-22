@@ -4,6 +4,8 @@ using Microsoft.WindowsAzure.Storage.Table;
 
 public class FeedEntity : TableEntity
 {
+    public static string Manual = "manual";
+
     public FeedEntity(string rowKey, string partitionKey)
     {
         RowKey = rowKey; 
