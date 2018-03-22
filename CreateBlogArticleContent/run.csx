@@ -28,16 +28,11 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
 {
     dynamic requestBody = await req.Content.ReadAsAsync<object>();
     string date = requestBody?.date;
-    
-    GetBlogArticleDate(out date, log);
-
-    log.Info($"Current date: {date}");
-
-    var currentDate = DateTime.Parse(date);
-    var blogArticleUrl = GetBlogArticleUrl(currentDate);
-    var blogArticleTitle = GetBlogArticleTitle(currentDate);
-    var blogArticleContent = GetBlogArticleContent(currentDate);
-
+    var blogArticleDate = GetBlogArticleDate(date);
+    log.Info($"Current date: {blogArticleDate.ToString()}");
+    var blogArticleUrl = GetBlogArticleUrl(blogArticleDate);
+    var blogArticleTitle = GetBlogArticleTitle(blogArticleDate);
+    var blogArticleContent = GetBlogArticleContent(blogArticleDate);
     return req.CreateResponse(HttpStatusCode.OK, new
     {
         url = blogArticleUrl,
@@ -46,24 +41,21 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
     });
 }
 
-static void GetBlogArticleDate(out string date, TraceWriter log)
+static DateTime GetBlogArticleDate(string date)
 {
     if(!string.IsNullOrEmpty(date))
     {
-        return;
+        return DateTime.Parse(date);
     }
-    var startTime = DateTime.UtcNow;
-    var timer = System.Diagnostics.Stopwatch.StartNew();
-    var storageAccountConnectionString = Environment.GetEnvironmentVariable("RssFeedsTableStorageConnectionString");
-    var storageAccount = CloudStorageAccount.Parse(storageAccountConnectionString);
-    var tableClient = storageAccount.CreateCloudTableClient();
-    var table = tableClient.GetTableReference("RssFeeds");
-    var query = new TableQuery<FeedEntity>();
-    var results = table.ExecuteQuery(query).OrderByDescending(f => f.Date).Take(1);
-    date = results[0].Date;
-    log.Info($"Number of items while retrieving the current date: {results.Count()}");
-    telemetry.TrackDependency("TableStorage", "GetBlogArticleDate", startTime, timer.Elapsed, true);
-    
+    var currentDate = DateTime.UtcNow;
+    if(currentDate.Days == 1)
+    {
+        return currentDate.AddMonths(-1);
+    }
+    else
+    {
+        return currentDate;
+    }
 }
 
 static string GetBlogArticleUrl(DateTime currentDate)
