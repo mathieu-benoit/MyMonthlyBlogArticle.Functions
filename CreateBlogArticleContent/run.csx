@@ -41,7 +41,7 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
 
 static DateTime GetBlogArticleDate(string date)
 {
-    DateTime currentDate = !string.IsNullOrEmpty(date) ? DateTime.Parse(date) : currentDate = DateTime.UtcNow;
+    var currentDate = !string.IsNullOrEmpty(date) ? DateTime.Parse(date) : DateTime.UtcNow;
     return currentDate.Day == 1 ? currentDate.AddMonths(-1) : currentDate;
 }
 
@@ -53,12 +53,7 @@ static string GetBlogArticleTitle(DateTime currentDate)
 static string GetBlogArticleContent(DateTime currentDate)
 {
     var builder = new StringBuilder();
-    FillBlogArticleBodyContent(builder, currentDate);
-    return builder.ToString();
-}
-
-static void FillBlogArticleBodyContent(StringBuilder builder, DateTime currentDate)
-{
+    
     //Header
     builder.Append($"<br /><br /><div class=\"separator\" style=\"clear:both;text-align:center;\"><a href=\"https://3.bp.blogspot.com/-4STUQFrmLaw/WlyVADOjSTI/AAAAAAAAQMg/wOElBvJG8iMzEnphozggFw5cSxbKcJnpgCLcBGAs/s1600/IMG_20180114_122358.jpg\" imageanchor=\"1\"style=\"margin-left:1em; margin-right:1em;\"><img border=\"0\" data-original-height=\"987\" data-original-width=\"1600\" height=\"197\" src =\"https://3.bp.blogspot.com/-4STUQFrmLaw/WlyVADOjSTI/AAAAAAAAQMg/wOElBvJG8iMzEnphozggFw5cSxbKcJnpgCLcBGAs/s1600/IMG_20180114_122358.jpg\" width=\"320\" /></a ></div >");
 
@@ -126,4 +121,6 @@ static void FillBlogArticleBodyContent(StringBuilder builder, DateTime currentDa
     builder.Append($"<br /><br />Enjoy!");
     builder.Append($"<br /><br /><i>This blog article has been powered by Azure Logic Apps, Azure Functions and Azure Table Storage, <a href=\"https://alwaysupalwayson.blogspot.com/2017/08/my-monthly-azure-news-updates-powered.html\">check out the story</a></i>!");
     builder.Append($"<br /><br /><i>Some stats for the record for this month: {resultsCount} entries ({manualEntriesCount * 100 / resultsCount}% manual) - XX Logic App Runs (XX% failed) - XX Logic App Skipped Runs/Triggers - XX Logic App Billable actions - 1 Azure Functions execution (duration: XXms). The total Azure consumption cost for this month is: XX$CAD.</i>!");
+    
+    return builder.ToString();
 }
