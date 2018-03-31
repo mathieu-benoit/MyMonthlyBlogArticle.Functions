@@ -73,7 +73,6 @@ static string GetBlogArticleContent(DateTime currentDate)
     var dataAiStringBuilder = new StringBuilder();
     var securityStringBuilder = new StringBuilder();
     var miscStringBuilder = new StringBuilder();
-    var manualEntriesCount = 0;
     foreach (var feed in results)
     {
         var feedInHtml = $"<a href=\"{feed.Link}\">{DateTime.Parse(feed.Date).ToString("dd")}</a> - {feed.Title}";
@@ -97,11 +96,6 @@ static string GetBlogArticleContent(DateTime currentDate)
         {
             miscStringBuilder.Append($"<br />{feedInHtml}");
         }
-
-        if(feed.Type == FeedEntity.Manual)
-        {
-            manualEntriesCount++;
-        }
     }
 
     builder.Append($"<br />Microsoft Azure news, updates and announcements ({resultsCount} entries) for {currentDate.ToString("MMMM yyyy")}:");
@@ -120,7 +114,6 @@ static string GetBlogArticleContent(DateTime currentDate)
     builder.Append($"<br /><br />Did you miss the previous ones? <a href=\"https://alwaysupalwayson.blogspot.com/search/label/News%20and%20Updates\">Check them out</a>!");
     builder.Append($"<br /><br />Enjoy!");
     builder.Append($"<br /><br /><i>This blog article has been powered by Azure Logic Apps, Azure Functions and Azure Table Storage, <a href=\"https://alwaysupalwayson.blogspot.com/2017/08/my-monthly-azure-news-updates-powered.html\">check out the story</a></i>!");
-    builder.Append($"<br /><br /><i>Some stats for the record for this month: {resultsCount} entries ({manualEntriesCount * 100 / resultsCount}% manual) - XX Logic App Runs (XX% failed) - XX Logic App Skipped Runs/Triggers - XX Logic App Billable actions - 1 Azure Functions execution (duration: XXms). The total Azure consumption cost for this month is: XX$CAD.</i>!");
     
     return builder.ToString();
 }
