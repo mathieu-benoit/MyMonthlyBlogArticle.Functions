@@ -19,6 +19,6 @@ RssFeedsTableStorageConnectionString=<connection-string-of-the-azure-table-stora
 
 az group deployment create \
   -g $RG \
-  --template-file azure-deploy.json 
+  --template-file azure-deploy.json \
   --parameters functionAppName=$FunctionAppName rssFeedsTableStorageConnectionString=$RssFeedsTableStorageConnectionString
 ```
