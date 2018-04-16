@@ -55,7 +55,7 @@ static string GetBlogArticleContent(DateTime currentDate)
     var builder = new StringBuilder();
     
     //Header
-    builder.Append($"<br /><br /><div class=\"separator\" style=\"clear:both;text-align:center;\"><a href=\"https://4.bp.blogspot.com/-HyQUWhGbehw/WtULBme388I/AAAAAAAAQ0Y/5sb4xt_118Q8xNOl8u_87txqa1FfYaFgQCLcBGAs/s1600/IMG_20180416_114801.jpg\" width=\"320\" /></a ></div >");
+    builder.Append($"<br /><br /><div class=\"separator\" style=\"clear:both;text-align:center;\"><a href=\"https://4.bp.blogspot.com/-HyQUWhGbehw/WtULBme388I/AAAAAAAAQ0Y/5sb4xt_118Q8xNOl8u_87txqa1FfYaFgQCLcBGAs/s1600/IMG_20180416_114801.jpg\" imageanchor=\"1\"style=\"margin-left:1em; margin-right:1em;\"><img border=\"0\" data-original-height=\"987\" data-original-width=\"1600\" height=\"197\" src =\"https://4.bp.blogspot.com/-HyQUWhGbehw/WtULBme388I/AAAAAAAAQ0Y/5sb4xt_118Q8xNOl8u_87txqa1FfYaFgQCLcBGAs/s1600/IMG_20180416_114801.jpg\" width=\"320\" /></a ></div >");
 
     //Body
     var startTime = DateTime.UtcNow;
