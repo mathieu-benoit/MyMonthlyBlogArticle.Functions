@@ -114,7 +114,7 @@ static string GetBlogArticleContent(DateTime currentDate)
     builder.Append($"<br /><br />Did you miss the previous ones? <a href=\"https://alwaysupalwayson.blogspot.com/search/label/News%20and%20Updates\">Check them out</a>!");
     builder.Append($"<br /><br />Enjoy!");
     builder.Append($"<br /><br /><i>This blog article has been powered by Azure Logic Apps, Azure Functions and Azure Table Storage, <a href=\"https://alwaysupalwayson.blogspot.com/2017/08/my-monthly-azure-news-updates-powered.html\">check out the story</a>!</i>");
-    builder.Append($"<br /><br /><i>Furthermore, feel free to ask the associated Bot and <a href=\"https://alwaysupalwayson.blogspot.com/2018/04/my-monthly-azure-news-updates-blog.html\">check out the story</a> how easily I built it the with Azure Bot Service!</i>");
+    builder.Append($"<br /><br /><i>Furthermore, feel free to ask the associated Bot and <a href=\"https://alwaysupalwayson.blogspot.com/2018/04/my-monthly-azure-news-updates-blog.html\">check out the story</a> how easily I built it with the Azure Bot Service!</i>");
     
     return builder.ToString();
 }
