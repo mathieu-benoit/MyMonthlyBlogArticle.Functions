@@ -14,10 +14,10 @@ using Microsoft.WindowsAzure.Storage.Table;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.ApplicationInsights;
 
-static Regex AppDevKeyWordsRegex = new Regex("(App Service|Functions|Logic Apps|DevOps|VSTS|Visual Studio|Application Insights|Web|Media|Xamarin|Mobile|ASP.NET|CDN|Java|.NET|Azure Search|Azure Redis Cache|DevTest Labs|API Management|Container|Service Fabric|ACS|Sitecore|Video Indexer|TFS|PHP|Kubernetes|AKS|OpenShift)");
+static Regex AppDevKeyWordsRegex = new Regex("(App Service|Functions|Logic Apps|DevOps|VSTS|Visual Studio|Application Insights|Web|Media|Xamarin|Mobile|ASP.NET|CDN|Java|.NET|Azure Search|Azure Redis Cache|DevTest Labs|API Management|Container|Service Fabric|ACS|Sitecore|Video Indexer|TFS|PHP|Kubernetes|AKS|OpenShift|App Center|DevOps|Open Service Broker)");
 static Regex InfraKeyWordsRegex = new Regex("(Azure Stack|ExpressRoute|Virtual Machine|VM|Azure Batch|Availability Zones|Azure Automation|Azure Site Recovery|Azure Storage|Azure Log Analytics|OMS|Azure Monitor|Azure Cost Management|Load Balancer|DNS|Network|Traffic Manager|VNet|StorSimple|Backup|Service Health|Blockchain|Azure Migrate|Reserved Instance|Operations Management Suite|Azure Service Health|Log Analytics|Azure File|SAP HANA)");
 static Regex DataAIKeyWordsRegex = new Regex("(Cosmos DB|CosmosDB|SQL|IoT|Cognitive Services|PowerBI|Power BI|Data Lake|Azure Analysis Services|Database|HDInsight|Machine Learning|Data Factory|Stream Analytics|Time Series Insights|MySQL|PostgreSQL|Data Warehouse|Event Grid|Event Hub|Service Bus|Databricks|QnAMaker)");
-static Regex SecurityKeyWordsRegex = new Regex("(Security Center|GDPR|Azure Active Directory|AAD|AD DS|SOC|Azure Information Protection|Azure AD|EMS|Traffic Analytics|Azure Advanced Threat Protection|DDoS|Azure Security Center|Cloud App Security|Application Security Groups)");
+static Regex SecurityKeyWordsRegex = new Regex("(Security Center|GDPR|Azure Active Directory|AAD|AD DS|SOC|Azure Information Protection|Azure AD|EMS|Traffic Analytics|Azure Advanced Threat Protection|DDoS|Azure Security Center|Cloud App Security|Application Security Groups|Intune)");
 
 public static var telemetry = new TelemetryClient()
 {
