@@ -39,7 +39,7 @@ public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
     var blogArticleDate = GetBlogArticleDate(date);
     log.Info($"Current date: {blogArticleDate.ToString()}");
     var blogArticleTitle = GetBlogArticleTitle(blogArticleDate);
-    var blogArticleContent = GetBlogArticleContent(blogArticleDate);
+    var blogArticleContent = GetBlogArticleContent(blogArticleDate, log);
     return req.CreateResponse(HttpStatusCode.OK, new
     {
         title = blogArticleTitle,
@@ -58,7 +58,7 @@ static string GetBlogArticleTitle(DateTime currentDate)
     return $"Microsoft Azure - News & Updates - {currentDate.ToString("MMMM yyyy")}";
 }
 
-static string GetBlogArticleContent(DateTime currentDate)
+static string GetBlogArticleContent(DateTime currentDate, TraceWriter log)
 {
     var builder = new StringBuilder();
     
@@ -73,6 +73,8 @@ static string GetBlogArticleContent(DateTime currentDate)
     var results = table.ExecuteQuery(query).OrderByDescending(f => f.Date);
     var resultsCount = results.Count();
     telemetry.TrackDependency("TableStorage", "GetFeedsForCurrentMonth", startTime, timer.Elapsed, true);
+    log.Info($"GetFeedsForCurrentMonth - TimeElapsed: {timer.Elapsed}");
+    log.Info($"Results count: {resultsCount}");
     var appDevStringBuilder = new StringBuilder();
     var infraStringBuilder = new StringBuilder();
     var dataAiStringBuilder = new StringBuilder();
