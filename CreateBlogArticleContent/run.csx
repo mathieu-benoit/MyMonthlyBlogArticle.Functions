@@ -24,6 +24,14 @@ public static var telemetry = new TelemetryClient()
     InstrumentationKey = Environment.GetEnvironmentVariable("APPINSIGHTS_INSTRUMENTATIONKEY")
 };
 
+private static CloudTable GetRssFeedsCloudTable()
+{
+    var storageAccountConnectionString = Environment.GetEnvironmentVariable("RssFeedsTableStorageConnectionString");
+    var storageAccount = CloudStorageAccount.Parse(storageAccountConnectionString);
+    var tableClient = storageAccount.CreateCloudTableClient();
+    return tableClient.GetTableReference("RssFeeds");
+}
+
 public static async Task<object> Run(HttpRequestMessage req, TraceWriter log)
 {
     dynamic requestBody = await req.Content.ReadAsAsync<object>();
@@ -60,10 +68,7 @@ static string GetBlogArticleContent(DateTime currentDate)
     //Body
     var startTime = DateTime.UtcNow;
     var timer = System.Diagnostics.Stopwatch.StartNew();
-    var storageAccountConnectionString = Environment.GetEnvironmentVariable("RssFeedsTableStorageConnectionString");
-    var storageAccount = CloudStorageAccount.Parse(storageAccountConnectionString);
-    var tableClient = storageAccount.CreateCloudTableClient();
-    var table = tableClient.GetTableReference("RssFeeds");
+    var table = GetRssFeedsCloudTable();
     var query = new TableQuery<FeedEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, currentDate.ToString("yyyy-MM")));
     var results = table.ExecuteQuery(query).OrderByDescending(f => f.Date);
     var resultsCount = results.Count();
